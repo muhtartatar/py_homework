@@ -1,12 +1,28 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
+constant = []
 
+# операція GET
+@app.route('/constant', methods=['GET'])
+def get_constant():
+    return jsonify(constant)
 
-@app.rout("/")
-def hello_world():
-    return "<h3>Hello World!!!<h3>"
+# операція POST
+@app.route('/constant', methods=['POST'])
+def add_constant():
+    import random
+    constant.append(random.randint(0, 100))
+    return 'Element added'
 
+# операція DELETE
+@app.route('/constant', methods=['DELETE'])
+def delete_constant():
+    if constant:
+        constant.pop()
+        return 'Element deleted'
+    else:
+        return 'List is empty'
 
-#if __name__ == "__maim__":
-    #app.run(host='0.0.0.0', port=8000, debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
